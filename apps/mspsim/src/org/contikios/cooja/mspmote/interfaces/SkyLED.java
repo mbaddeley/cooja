@@ -85,14 +85,23 @@ public class SkyLED extends LED {
   }
 
   public boolean isGreenOn() {
+    if(greenOn) {
+      mote.getInterfaces().getMoteAttributes().setAttributes("color=green");
+    }
     return greenOn;
   }
 
   public boolean isYellowOn()  {
+    if(blueOn) {
+      mote.getInterfaces().getMoteAttributes().setAttributes("color=blue");
+    }
     return blueOn; /* Returning blue */
   }
 
   public boolean isRedOn() {
+    if(redOn) {
+      mote.getInterfaces().getMoteAttributes().setAttributes("color=red");
+    }
     return redOn;
   }
 
