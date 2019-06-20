@@ -52,6 +52,7 @@ public class SkyLED extends LED {
   private static Logger logger = Logger.getLogger(SkyLED.class);
 
   private SkyMote mspMote;
+  private Mote mote = null;
   private boolean blueOn = false;
   private boolean greenOn = false;
   private boolean redOn = false;
@@ -64,6 +65,7 @@ public class SkyLED extends LED {
   private static final Color RED = new Color(255, 0, 0);
 
   public SkyLED(Mote mote) {
+    this.mote = mote;
     mspMote = (SkyMote) mote;
 
     IOUnit unit = mspMote.getCPU().getIOUnit("Port 5");
