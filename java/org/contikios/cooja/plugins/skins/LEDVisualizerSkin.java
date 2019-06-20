@@ -118,10 +118,13 @@ public class LEDVisualizerSkin implements VisualizerSkin {
       Point pixel = visualizer.transformPositionToPixel(pos);
 
       int x = pixel.x - 2*Visualizer.MOTE_RADIUS;
-      
+
       int y = pixel.y - Visualizer.MOTE_RADIUS;
       g.setColor(Color.RED);
       if (leds.isRedOn()) {
+        // FIXME: This isn't very portable to anything else. Would be nice to
+        //        have this as an option. Also, cooja mote LEDs are buggy.
+        mote.getInterfaces().getMoteAttributes().setAttributes("color=red");
         g.fillRect(x, y, 7, 4);
       } else {
         g.drawRect(x, y, 7, 4);
@@ -130,6 +133,9 @@ public class LEDVisualizerSkin implements VisualizerSkin {
       y += 6;
       g.setColor(Color.GREEN);
       if (leds.isGreenOn()) {
+        // FIXME: This isn't very portable to anything else. Would be nice to
+        //        have this as an option. Also, cooja mote LEDs are buggy.
+        mote.getInterfaces().getMoteAttributes().setAttributes("color=green");
         g.fillRect(x, y, 7, 4);
       } else {
         g.drawRect(x, y, 7, 4);
@@ -138,6 +144,9 @@ public class LEDVisualizerSkin implements VisualizerSkin {
       y += 6;
       g.setColor(Color.BLUE);
       if (leds.isYellowOn()) {
+        // FIXME: This isn't very portable to anything else. Would be nice to
+        //        have this as an option. Also, cooja mote LEDs are buggy.
+        mote.getInterfaces().getMoteAttributes().setAttributes("color=blue");
         g.fillRect(x, y, 7, 4);
       } else {
         g.drawRect(x, y, 7, 4);
