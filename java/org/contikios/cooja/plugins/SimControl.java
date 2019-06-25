@@ -51,6 +51,8 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import java.awt.Font;
+
 import org.contikios.cooja.ClassDescription;
 import org.contikios.cooja.Cooja;
 import org.contikios.cooja.HasQuickHelp;
@@ -181,6 +183,7 @@ public class SimControl extends VisPlugin implements HasQuickHelp {
     smallPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 
     JLabel label = new JLabel("?");
+    label.setFont(new Font(null, Font.PLAIN, 20));
     smallPanel.add(label);
     simulationTime = label;
 
@@ -193,6 +196,7 @@ public class SimControl extends VisPlugin implements HasQuickHelp {
     smallPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 
     label = new JLabel("?");
+    label.setFont(new Font(null, Font.PLAIN, 20));
     smallPanel.add(label);
     simulationSpeedup = label;
 
