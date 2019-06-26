@@ -135,16 +135,25 @@ public class Serial2Pty extends VisPlugin implements MotePlugin {
               serialPort.addSerialDataObserver(serialObserver = new Observer() {
                   public void update(Observable obs, Object obj) {
                       try {
+                          _serialData += (char)serialPort.getLastSerialData();
+                          if (_serialData.endsWith("\n") || _serialData.length() > 512) {
+                            String timestamp = " " + Long.toString(simulation.getSimulationTime());
+                            for (int i = 0; i < timestamp.length(); i++) {
+                                outPipeStream.write((byte)timestamp.charAt(i));
+                                outPipeStream.flush();
+                            }
+
+                            _serialData = _serialData.substring(0, _serialData.length() - 1);
+                            _serialData = timestamp + " " + _serialData;
+
+                            logger.info("Forwarding from serial: " + _serialData);
+                            _serialData = "";
+                          }
+
                           outPipeStream.write(serialPort.getLastSerialData());
                           outPipeStream.flush();
 
-                          _serialData += (char)serialPort.getLastSerialData();
 
-                          if (_serialData.endsWith("\n") || _serialData.length() > 512) {
-                              _serialData = _serialData.substring(0, _serialData.length() - 1);
-                              logger.debug("Forwarding from serial: " + _serialData);
-                              _serialData = "";
-                          }
                       } catch (IOException e) {
                           logger.error("Error when writing to out pipe: " + e);
 
