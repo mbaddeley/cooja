@@ -6,4 +6,5 @@ build
 /apps/avrora/cooja-avrora.jar
 /apps/serial_socket/serial-socket.jar
 /apps/powertracker/powertracker.jar
+/apps/serial2pty/serial2pty.jar
 /tools/coffee-manager/coffee.jar
