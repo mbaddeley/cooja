@@ -52,6 +52,7 @@ public class SkyLED extends LED {
   private static Logger logger = Logger.getLogger(SkyLED.class);
 
   private SkyMote mspMote;
+  private Mote mote = null;
   private boolean blueOn = false;
   private boolean greenOn = false;
   private boolean redOn = false;
@@ -64,6 +65,7 @@ public class SkyLED extends LED {
   private static final Color RED = new Color(255, 0, 0);
 
   public SkyLED(Mote mote) {
+    this.mote = mote;
     mspMote = (SkyMote) mote;
 
     IOUnit unit = mspMote.getCPU().getIOUnit("Port 5");
@@ -85,14 +87,23 @@ public class SkyLED extends LED {
   }
 
   public boolean isGreenOn() {
+    if(greenOn) {
+      mote.getInterfaces().getMoteAttributes().setAttributes("color=green");
+    }
     return greenOn;
   }
 
   public boolean isYellowOn()  {
+    if(blueOn) {
+      mote.getInterfaces().getMoteAttributes().setAttributes("color=blue");
+    }
     return blueOn; /* Returning blue */
   }
 
   public boolean isRedOn() {
+    if(redOn) {
+      mote.getInterfaces().getMoteAttributes().setAttributes("color=red");
+    }
     return redOn;
   }
 

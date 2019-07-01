@@ -104,15 +104,27 @@ public class ContikiLED extends LED implements ContikiMoteInterface, PolledAfter
   }
 
   public boolean isGreenOn() {
-    return (currentLedValue & LEDS_GREEN) > 0;
+    if ((currentLedValue & LEDS_GREEN) > 0) {
+      mote.getInterfaces().getMoteAttributes().setAttributes("color=green");
+      return true;
+    }
+    return false;
   }
 
   public boolean isYellowOn() {
-    return (currentLedValue & LEDS_YELLOW) > 0;
+    if ((currentLedValue & LEDS_YELLOW) > 0) {
+      mote.getInterfaces().getMoteAttributes().setAttributes("color=blue");
+      return true;
+    }
+    return false;
   }
 
   public boolean isRedOn() {
-    return (currentLedValue & LEDS_RED) > 0;
+    if ((currentLedValue & LEDS_RED) > 0) {
+      mote.getInterfaces().getMoteAttributes().setAttributes("color=red");
+      return true;
+    }
+    return false;
   }
 
   public void doActionsAfterTick() {
