@@ -111,6 +111,10 @@ public class SimControl extends VisPlugin implements HasQuickHelp {
         new ChangeMaxSpeedLimitAction("No speed limit", null));
     speedlimitButtonGroup.add(limitMenuItemNo);
     speedMenu.add(limitMenuItemNo);
+    JRadioButtonMenuItem limitMenuItem0 = new JRadioButtonMenuItem(
+        new ChangeMaxSpeedLimitAction(".5%", 0.005));
+    speedlimitButtonGroup.add(limitMenuItem0);
+    speedMenu.add(limitMenuItem0);
     JRadioButtonMenuItem limitMenuItem1 = new JRadioButtonMenuItem(
         new ChangeMaxSpeedLimitAction("1%", 0.01));
     speedlimitButtonGroup.add(limitMenuItem1);
@@ -134,6 +138,8 @@ public class SimControl extends VisPlugin implements HasQuickHelp {
 
     if (simulation.getSpeedLimit() == null) {
       limitMenuItemNo.setSelected(true);
+    } else if (simulation.getSpeedLimit().doubleValue() == 0.005) {
+      limitMenuItem0.setSelected(true);
     } else if (simulation.getSpeedLimit().doubleValue() == 0.01) {
       limitMenuItem1.setSelected(true);
     } else if (simulation.getSpeedLimit().doubleValue() == 0.10) {
