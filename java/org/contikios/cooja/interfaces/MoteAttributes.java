@@ -56,14 +56,14 @@ import org.contikios.cooja.plugins.skins.AttributeVisualizerSkin;
  * typically via printf()'s of the serial port.
  *
  * Mote attributes are visualized by {@link AttributeVisualizerSkin}.
- * 
+ *
  * Syntax:
  * "#A <Attribute Name>=<Attribute Value>"
  * "#A <Attribute Name>=<Attribute Value>;<Color>"
  *
  * Example, add an attribute 'sent' with value 41:
  * "#A sent=41"
- * 
+ *
  * Example, add an attribute 'sent' with value 41, visualized in red:
  * "#A sent=41;RED"
  *
@@ -89,14 +89,14 @@ public class MoteAttributes extends MoteInterface {
       handleNewLog(msg);
     };
   };
-  
+
   public MoteAttributes(Mote mote) {
     this.mote = mote;
   }
 
   public void added() {
     super.added();
-    
+
     /* Observe log interfaces */
     for (MoteInterface mi: mote.getInterfaces().getInterfaces()) {
       if (mi instanceof Log) {
@@ -104,7 +104,7 @@ public class MoteAttributes extends MoteInterface {
       }
     }
   }
-  
+
   public void removed() {
     super.removed();
 
@@ -125,20 +125,67 @@ public class MoteAttributes extends MoteInterface {
     if (msg.startsWith("DEBUG: ")) {
       msg = msg.substring("DEBUG: ".length());
     }
-    
-    if (!msg.startsWith("#A ")) {
+
+    if (msg.startsWith("#A ")) {
+      /* remove "#A " */
+      msg = msg.substring(3);
+
+      setAttributes(msg);
+
+      setChanged();
+      notifyObservers();
+
+    } else if (msg.startsWith("#O ")) {
+      /* #O 1,<attributes>*/
+      /* remove "#O " */
+      msg = msg.substring(3);
+      /* Get mote id */
+      String moteString = "";
+      int idIndex = msg.indexOf(',');
+      if (idIndex > 0) {
+         moteString = msg.substring(0, idIndex).trim();
+         msg = msg.substring(idIndex + 1).trim();
+      }
+
+      logger.info("Mote msg: " + msg);
+      logger.info("Mote String: " + moteString);
+
+      int moteID;
+      try {
+        moteID = Integer.parseInt(moteString);
+      } catch (Exception e) {
+        logger.warn("Not a mote ID!");
+        return;
+      }
+
+      logger.info("Mote ID: " + moteID);
+
+      /* Locate other mote */
+      Mote otherMote = mote.getSimulation().getMoteWithID(moteID);
+      if (otherMote == null) {
+        logger.warn("No other mote with ID: " + moteID);
+        return;
+      }
+      if (otherMote == mote) {
+        logger.warn("Other mote is ourselves?");
+        return;
+      }
+
+      logger.info("Mote attr: " + msg);
+
+      /* Set the other mote attributes */
+      MoteAttributes otherMoteAttributes;
+      otherMoteAttributes= otherMote.getInterfaces().getMoteAttributes();
+      otherMoteAttributes.setAttributes(msg);
+      otherMoteAttributes.setChanged();
+      otherMoteAttributes.notifyObservers();
+
+    } else {
       return;
     }
-    /* remove "#A " */
-    msg = msg.substring(3);
-    
-    setAttributes(msg);
-
-    setChanged();
-    notifyObservers();
   }
 
-  private void setAttributes(String att) {
+  public void setAttributes(String att) {
     if (att.indexOf(",") >= 0) {
       /* Handle each attribute separately */
       String[] atts = att.split(",");
@@ -158,7 +205,7 @@ public class MoteAttributes extends MoteInterface {
       logger.warn(mote + ": Malformed attribute was ignored: " + att);
     }
   }
-  
+
   public String getText() {
       StringBuffer sb = new StringBuffer();
       Object[] keys = attributes.keySet().toArray();
@@ -167,7 +214,7 @@ public class MoteAttributes extends MoteInterface {
       }
       return sb.toString();
   }
-  
+
   public JPanel getInterfaceVisualizer() {
     JPanel panel = new JPanel();
     panel.setLayout(new BorderLayout());

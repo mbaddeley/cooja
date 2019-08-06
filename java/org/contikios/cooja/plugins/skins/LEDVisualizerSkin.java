@@ -118,7 +118,7 @@ public class LEDVisualizerSkin implements VisualizerSkin {
       Point pixel = visualizer.transformPositionToPixel(pos);
 
       int x = pixel.x - 2*Visualizer.MOTE_RADIUS;
-      
+
       int y = pixel.y - Visualizer.MOTE_RADIUS;
       g.setColor(Color.RED);
       if (leds.isRedOn()) {

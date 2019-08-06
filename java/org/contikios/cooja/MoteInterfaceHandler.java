@@ -58,6 +58,7 @@ public class MoteInterfaceHandler {
   private Clock myClock;
   private IPAddress myIPAddress;
   private RimeAddress myRimeAddress;
+  private MoteAttributes myMoteAttributes;
   private LED myLED;
   private Log myLog;
   private MoteID myMoteID;
@@ -115,7 +116,7 @@ public class MoteInterfaceHandler {
   /**
    * Returns the first interface with a class name that ends with the given arguments.
    * Example: mote.getInterfaces().get("Temperature");
-   * 
+   *
    * @param <N>
    * @param classname
    * @return
@@ -209,6 +210,18 @@ public class MoteInterfaceHandler {
       myLED = getInterfaceOfType(LED.class);
     }
     return myLED;
+  }
+
+  /**
+   * Returns the Attributes interface (if any).
+   *
+   * @return Attribute interface
+   */
+  public MoteAttributes getMoteAttributes() {
+    if (myMoteAttributes == null) {
+      myMoteAttributes = getInterfaceOfType(MoteAttributes.class);
+    }
+    return myMoteAttributes;
   }
 
   /**
